@@ -1,0 +1,19 @@
+{
+    "name": "Mozilla Livegrep",
+    "repositories": [
+        {
+            "name": "gecko",
+            "path": "../gecko",
+            "revisions": [ "HEAD" ],
+            "metadata": {
+            }
+        },
+        {
+            "name": "gaia",
+            "path": "../gaia",
+            "revisions": [ "HEAD" ],
+            "metadata": {
+            }
+        }
+    ]
+}

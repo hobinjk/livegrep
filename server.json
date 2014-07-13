@@ -1,0 +1,13 @@
+{
+    "backends":
+    [
+        {
+            "id": "gecko",
+            "addr": "localhost:9999"
+        }
+    ],
+    "feedback": {
+        "mailto": "hobinjk@mit.edu"
+    },
+    "listen": "0.0.0.0:8910"
+}
