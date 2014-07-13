@@ -4,11 +4,14 @@
   <head>
     <title>code search ⋅ {{.Title}}</title>
     <link rel="stylesheet" href='/assets/css/codesearch.css' />
+    <link rel="stylesheet" href="/assets/css/prettify.css" />
+    <link rel="stylesheet" href="/assets/css/sunburst.css" />
     <script language="javascript" type="text/javascript" src="/assets/js/3d/jquery.js"></script>
     {{if .IncludeJS}}
     <script language="javascript" type="text/javascript" src="/assets/js/3d/underscore.js"></script>
     <script language="javascript" type="text/javascript" src="/assets/js/3d/backbone.js"></script>
     <script language="javascript" type="text/javascript" src="/assets/js/3d/html.js"></script>
+    <script language="javascript" type="text/javascript" src="/assets/js/3d/google-code-prettify/prettify.js"></script>
     <script language="javascript" type="text/javascript" src="/assets/js/codesearch.js"></script>
     <script language="javascript" type="text/javascript" src="/assets/js/codesearch_ui.js"></script>
     {{if .Config.Sentry.URI}}

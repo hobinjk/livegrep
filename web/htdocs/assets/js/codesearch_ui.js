@@ -13,13 +13,13 @@ function vercmp(a, b) {
     }
     if (abits[1] !== '') {
       anum = parseInt(abits[1]);
-      bnum = parseInt(bbits[1])
+      bnum = parseInt(bbits[1]);
       if (anum !== bnum)
         return anum - bnum;
     }
 
     if (abits[2] !== bbits[2]) {
-      return abits[2] < bbits[2] ? -1 : 1
+      return abits[2] < bbits[2] ? -1 : 1;
     }
 
     a = abits[3];
@@ -42,7 +42,7 @@ function shorten(ref) {
 var Match = Backbone.Model.extend({
   initialize: function() {
     this.get('contexts').forEach(function (ctx) {
-        ctx.paths.sort(function (a,b) {return vercmp(a.ref, b.ref);})
+        ctx.paths.sort(function (a,b) {return vercmp(a.ref, b.ref);});
     });
     this.get('contexts').sort(function (a,b) {
         return vercmp(a.paths[0].ref, b.paths[0].ref);
@@ -58,9 +58,9 @@ var Match = Backbone.Model.extend({
 
     var repo_map;
     if (this.get('backend'))
-      repo_map = CodesearchUI.github_repos[this.get('backend')]
+      repo_map = CodesearchUI.github_repos[this.get('backend')];
     else
-      repo_map = CodesearchUI.github_repos[Object.keys(CodesearchUI.github_repos)[0]]
+      repo_map = CodesearchUI.github_repos[Object.keys(CodesearchUI.github_repos)[0]];
     if (!repo_map[name])
       return null;
     return "https://github.com/" + repo_map[name] +
@@ -85,6 +85,10 @@ var MatchView = Backbone.View.extend({
     var ctx = this.model.get('context');
     var i;
     var ctx_before = [], ctx_after = [];
+    // Okay, so the ctx starts at line ctx.lno - ctx.context_before.length - 1
+    // then it has all the ctx_before lines
+    // then the line
+    // then the ctx_after lines
     for (i = 0; i < ctx.context_before.length; i ++) {
       ctx_before.unshift(h.div([
                                  h.span({cls: 'lno'}, [ctx.lno - i - 1, ":"]),
@@ -98,10 +102,21 @@ var MatchView = Backbone.View.extend({
                            ]));
     }
     var line = this.model.get('line');
+
     var bounds = this.model.get('bounds');
     var pieces = [line.substring(0, bounds[0]),
                   line.substring(bounds[0], bounds[1]),
                   line.substring(bounds[1])];
+
+    var aggregate = ctx.context_before.join("\n") + "\n";
+    aggregate += line.substring(0, bounds[0]);
+    aggregate += '<span class="nocode matchstr">' + line.substring(bounds[0], bounds[1]) + '</span>';
+    aggregate += line.substring(bounds[1]) + "\n";
+    aggregate += ctx.context_after.join("\n");
+    var aggPre = document.createElement("pre");
+    aggPre.classList.add("prettyprint");
+    aggPre.classList.add("linenums:"+(ctx.lno - ctx.context_before.length - 1));
+    aggPre.innerHTML = aggregate;
 
     var path = this.model.get('path');
     var repoLabel = [
@@ -116,15 +131,7 @@ var MatchView = Backbone.View.extend({
     return h.div({cls: 'match'}, [
         h.div({}, [
           h.span({cls: 'label'}, repoLabel)]),
-        h.div({cls: 'contents'}, [
-                ctx_before,
-                h.div({cls: 'matchline'}, [
-                  h.span({cls: 'lno'}, [ctx.lno + ":"]),
-                  pieces[0],
-                  h.span({cls: 'matchstr'}, [pieces[1]]),
-                  pieces[2]
-                ]),
-                ctx_after]),
+        h.div({cls: 'contents'}, [aggPre]),
         this.render_contexts(h)]);
   },
   render_contexts: function(h) {
@@ -142,7 +149,7 @@ var MatchView = Backbone.View.extend({
                 shorten(ctx.paths[0].ref)]),
                 ctx.paths.length > 1 ? (" +" + (ctx.paths.length - 1) + " identical") : [],
             ]);
-          }))])
+          }))]);
   },
   switch_context: function(ctx) {
     this.model.set({
@@ -230,7 +237,7 @@ var SearchState = Backbone.Model.extend({
     });
 
     if (q.backend) {
-      base += "/" + q.backend
+      base += "/" + q.backend;
     } else if (CodesearchUI.input_backend) {
       base += "/" + CodesearchUI.input_backend.val();
     }
@@ -297,7 +304,7 @@ var ResultView = Backbone.View.extend({
       this.errorbox.find('#errortext').text(this.model.get('error'));
       this.errorbox.show();
     } else {
-      this.errorbox.hide()
+      this.errorbox.hide();
     }
 
     var url = this.model.url();
@@ -320,7 +327,7 @@ var ResultView = Backbone.View.extend({
     if (this.model.get('time')) {
       this.$('#searchtimebox').show();
       var time = this.model.get('time');
-      this.time.text((time/1000) + "s")
+      this.time.text((time/1000) + "s");
     } else {
       this.$('#searchtimebox').hide();
     }
@@ -349,7 +356,7 @@ var CodesearchUI = function() {
       CodesearchUI.input_repo = $('#repobox');
       CodesearchUI.input_fold_case = $('#fold-case');
       CodesearchUI.input_backend = $('#backend');
-      if (CodesearchUI.input_backend.length == 0)
+      if (CodesearchUI.input_backend.length === 0)
         CodesearchUI.input_backend = null;
       CodesearchUI.parse_url();
 
@@ -379,8 +386,8 @@ var CodesearchUI = function() {
       var backend = null;
       if (parms.backend)
         backend = parms.backend;
-      var m;
-      if (m = (new RegExp("/search/(\\w+)/?").exec(window.location.pathname))) {
+      var m = new RegExp("/search/(\\w+)/?").exec(window.location.pathname);
+      if (m) {
         backend = m[1];
       }
       if (backend && CodesearchUI.input_backend)
@@ -444,3 +451,4 @@ var CodesearchUI = function() {
 CodesearchUI.onload();
 window.CodesearchUI = CodesearchUI;
 });
+// cachey-cache

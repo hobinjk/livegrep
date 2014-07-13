@@ -45,7 +45,6 @@ body {
 
 #resultbox {
     width: 100%;
-    border: 1px solid black;
     padding: 5px;
 }
 
@@ -78,17 +77,9 @@ body {
     font-weight: bold;
 }
 
-.match .contents {
-    white-space: pre;
-    font-family: monospace;
-    background: #eee;
-    border: 1px solid black;
-    margin-left: 1em;
-    padding: 3px;
-}
-
 .match .matchstr {
     font-weight: bold;
+    color: #ffa400;
 }
 
 #countarea {
